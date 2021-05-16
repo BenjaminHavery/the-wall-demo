@@ -1,65 +1,74 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useState } from 'react'
 
-export default function Home() {
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
+
+import Wall from '../components/Wall'
+
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+
+
+export default function WallPage() {
+
+  const [prog, setProg] = useState(0);
+
+  const count = {
+    x: 101,
+    y: 20,
+  };
+
+  const updateVirtualScroll = (e) => {
+    const newProg = clamp(prog + Math.floor(e.deltaY/100), 0, count.x - 2);
+    if (prog !== newProg) setProg(newProg);
+  }
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className='wrapper' onWheel={(e) => updateVirtualScroll(e)}>
+      <Canvas className='canvas' camera={{ position: [0, 0, 15]}}>
+        
+        <ambientLight intensity={0.1} />
+        <pointLight intensity={0.8} position={[10, 10, 10]} />
+        <axesHelper args={[10, 10, 10]} />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <fog attach="fog" args={['#000000', 10, 200]} />
+        <Wall {...{ count, prog }}/>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        <OrbitControls
+          maxPolarAngle={1.8}
+          minPolarAngle={0.2}
+          minAzimuthAngle={-1}
+          maxAzimuthAngle={1}
+          enableZoom={false}
+          enablePan={false}
+        />
+      </Canvas>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+      {/* <div className='controls'>
+        <button onClick={() => setProg(prog - 1)}>back</button>
+        <button onClick={() => setProg(prog + 1)}>forward</button>
+      </div> */}
+      
+      <style jsx>{`
+        .wrapper {
+          position: relative;
+          background: black;
+          height: 100vh;
+        }
+        :global(.canvas) {
+          height: 100vh;
+          width: 100%;
+        }
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+        .controls {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          background: black;
+        }
+      `}</style>
+      
     </div>
+
   )
 }
