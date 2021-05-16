@@ -68,7 +68,7 @@ export default function WallPage() {
       id: nanoid(),
       text: text,
       x: 3 * (messages.length+0.5) * dim.x,
-      y: (Math.random() - 0.5) * count.y * dim.y/2,
+      y: (Math.random() - 0.5) * count.y * dim.y/3,
       color: colors[Math.floor(Math.random() * colors.length)],
     }
     setNewMessage('');
@@ -88,7 +88,7 @@ export default function WallPage() {
         
         <ambientLight intensity={0.1} />
         <pointLight intensity={0.8} position={[10, 10, 10]} />
-        <axesHelper args={[10, 10, 10]} />
+        {/* <axesHelper args={[10, 10, 10]} /> */}
 
         <fog attach="fog" args={['#000000', 10, 200]} />
         <Wall
@@ -160,6 +160,7 @@ export default function WallPage() {
           left: 0;
           bottom: 0;
           right: 0;
+          padding-bottom: 50px;
           pointer-events: none;
         }
 
@@ -202,6 +203,12 @@ export default function WallPage() {
           background: none;
           font-size: 56px;
           cursor: pointer;
+        }
+
+        @media screen and (min-width: 1000px) {
+          .controls {
+            padding-bottom: 0;
+          }
         }
       `}</style>
       
