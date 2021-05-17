@@ -46,8 +46,8 @@ export default function Wall({ count, prog, messages, ...props }) {
                 font-size: ${m.htdm.font}px;
                 line-height: 1;
                 font-family: 'ADrip';
-                text-align: 'center';
-                font-style: 'italic';
+                text-align: center;
+                font-style: italic;
                 transition: opacity 0.1s linear;
               }
             `}</style>
