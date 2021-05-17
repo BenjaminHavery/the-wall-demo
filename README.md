@@ -1,34 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## A test by Ben Havery
 
-First, run the development server:
+This project is intended to demonstate the concept of a 3d wall to which users can add graffiti-style messages.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+[View Demo](https://adoring-curie-e4640c.netlify.app/).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The following core features are implemented:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- Dynamically sized 3d wall, performant via instanced rendering of ~10,000 bricks in a single draw call.
+- Graffiti messages attached to the 3d wall.
+- Controls for traversing the scene that make some kind of sense on desktop and mobile.
+- Basic UI for adding messages to the wall.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Future features might include:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- Fleshed out controls for adding messages, such that the user could select color, typeface, size, line-breaks etc.
+- Additional scene detail, for example foreground objects, pavement and sky.
+- More dynamic sizing and placement of messages on the wall, compared to the current implementation which is a single row of equally sized and shaped messages with a random offset in the y dimension.
+- Infinite wall, loaded/culled based on distance like messages are.
+- Integration of a data storage API for syncing messages between user sessions, Google Firebase would be good for this.
+- Changed render method for messages, currently projected HTML, to something inside the canvas (SVG sprites or 3d text?) that could be lit and occluded.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
