@@ -1,26 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { nanoid } from 'nanoid'
 
-const useTimeout = (callback, delay) => {
-  const savedCallback = useRef();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setTimeout(tick, delay);
-      return () => clearTimeout(id);
-    }
-  }, [delay]);
-};
-
-const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
-
+import { clamp, useTimeout } from '../data/util'
 
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
@@ -28,16 +9,8 @@ import { FaSprayCan, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 import Wall from '../components/Wall'
 
+import { brick as b, message as m, colors } from '../data/const'
 
-const colors = [
-  '#e8bd42',
-  '#40b3ed',
-  '#40ed88',
-  '#ff91eb',
-  '#f5f5f5',
-  '#546bff',
-  '#383838',
-];
 
 
 // Brick meta
@@ -71,8 +44,8 @@ export default function WallPage() {
     const message = {
       id: nanoid(),
       text: text,
-      x: prevX + dim.ms,
-      y: (Math.random() - 0.5) * count.y * dim.y/3,
+      x: prevX + m.dm.x,
+      y: (Math.random() - 0.5) * count.y * b.dm.y/3,
       color: colors[Math.floor(Math.random() * colors.length)],
     }
     setNewMessage('');
@@ -88,15 +61,15 @@ export default function WallPage() {
 
   return (
     <div className='wrapper' onWheel={(e) => updateVirtualScroll(Math.sign(e.deltaY))}>
-      <Canvas className='canvas' camera={{ position: [0, 0, count.y*dim.y/1.4]}}>
+      <Canvas className='canvas' camera={{ position: [0, 0, count.y*b.dm.y/1.4]}}>
         
         <ambientLight intensity={0.1} />
         <pointLight intensity={0.8} position={[10, 10, 10]} />
         {/* <axesHelper args={[10, 10, 10]} /> */}
 
-        <fog attach="fog" args={['#000000', 1*dim.ms, 10*dim.ms]} />
+        <fog attach="fog" args={['#000000', 1*m.dm.x, 10*m.dm.x]} />
         <Wall
-          messages={ messages.filter(m => prog - 6*dim.ms < m.x && prog + 6*dim.ms > m.x) }
+          messages={ messages.filter(mes => prog - 6*m.dm.x < mes.x && prog + 6*m.dm.x > mes.x) }
           {...{ dim, count, prog,  }}
         />
 
@@ -114,13 +87,13 @@ export default function WallPage() {
         <div className='row'>
           <button
             className='button'
-            onClick={() => updateVirtualScroll(-dim.ms)}
+            onClick={() => updateVirtualScroll(-m.dm.x)}
             >
             <FaChevronLeft/>
           </button>
           <button
             className='button'
-            onClick={() => updateVirtualScroll(dim.ms)}
+            onClick={() => updateVirtualScroll(m.dm.x)}
             >
             <FaChevronRight/>
           </button>
